@@ -15,8 +15,7 @@
 	<hr class="divider" />
 
 	<footer>
-<!--		<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>-->
-		<p>@sjhs.official X @inforum_siji</p>
+		<p><a href="https://www.instagram.com/sjhs.official">@sjhs.official</a> X <a href="https://www.instagram.com/inforum_siji">@inforum_siji</a></p>
 	</footer>
 </div>
 
