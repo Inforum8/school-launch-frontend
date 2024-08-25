@@ -6,12 +6,17 @@
 <div class="app">
 	<Header />
 
+	<hr class="divider" />
+
 	<main>
 		<slot />
 	</main>
 
+	<hr class="divider" />
+
 	<footer>
-		<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
+<!--		<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>-->
+		<p>@sjhs.official X @inforum_siji</p>
 	</footer>
 </div>
 
@@ -37,7 +42,8 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		align-items: center;
+		align-items: end;
+		margin-right: 16px;
 		padding: 12px;
 	}
 
@@ -49,5 +55,13 @@
 		footer {
 			padding: 12px 0;
 		}
+	}
+
+	.divider {
+			border: 0;
+			height: 1px;
+			margin: 1rem 0;
+			background: #ccc;
+			width: 100%;
 	}
 </style>
