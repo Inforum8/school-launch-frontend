@@ -50,6 +50,7 @@
         display: flex;
         justify-content: center;
         margin-bottom: 8px;
+				font-size: 28px;
     }
 
     .right-text {
@@ -58,6 +59,7 @@
         align-items: flex-end;
         flex: 1;
         margin-right: 16px;
+        font-size: 28px;
     }
 
     footer a {

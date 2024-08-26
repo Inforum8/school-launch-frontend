@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      ky:
+        specifier: ^1.7.1
+        version: 1.7.1
     devDependencies:
       '@fontsource/fira-mono':
         specifier: ^5.0.0
@@ -1008,6 +1012,10 @@ packages:
 
   known-css-properties@0.34.0:
     resolution: {integrity: sha512-tBECoUqNFbyAY4RrbqsBQqDFpGXAEbdD5QKr8kACx3+rnArmuuR22nKQWKazvp07N9yjTyDZaw/20UIH8tL9DQ==}
+
+  ky@1.7.1:
+    resolution: {integrity: sha512-KJ/IXXkFhTDqxcN8wKqMXk1/UoOpc0UnOB6H7QcqlPInh/M2B5Mlj+i9exez1w4RSwJhNFmHiUDPriAYFwb5VA==}
+    engines: {node: '>=18'}
 
   levn@0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
@@ -2555,6 +2563,8 @@ snapshots:
   kleur@4.1.5: {}
 
   known-css-properties@0.34.0: {}
+
+  ky@1.7.1: {}
 
   levn@0.4.1:
     dependencies:
