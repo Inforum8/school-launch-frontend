@@ -13,10 +13,19 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		console.log(params);
 
 		if (!schoolName) {
-			return new Response(JSON.stringify({ error: 'No school name provided.' }), {
-				status: 400,
-				headers: { 'content-type': 'application/json' }
-			});
+			return new Response(
+				JSON.stringify(
+					{
+						success: false,
+						status: 400,
+						message: '학교 이름이 제공되지 않았습니다.'
+					} as ApiResult
+				),
+				{
+					status: 400,
+					headers: { 'content-type': 'application/json' }
+				}
+			)
 		}
 
 		const schoolInfo: NiceSchoolInfo = await ky
