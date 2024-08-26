@@ -10,8 +10,6 @@ export async function GET(event: RequestEvent): Promise<Response> {
 
 		const schoolName = params.get('schoolName');
 
-		console.log(params);
-
 		if (!schoolName) {
 			return new Response(
 				JSON.stringify(
