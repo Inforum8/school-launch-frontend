@@ -29,6 +29,12 @@ Make sure you have the following installed on your development machine:
 - [Node.js](https://nodejs.org/) (version 14 or higher)
 - [pnpm](https://pnpm.io/)
 
+Please fill .env file for using nice api
+
+```env
+NICE_API_KEY=
+```
+
 ## Installation
 
 Clone the repository and install dependencies:

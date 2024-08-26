@@ -1,6 +1,7 @@
 import { json, type RequestEvent } from '@sveltejs/kit';
 import ky from 'ky';
 import type { ApiResult } from '$lib/type/result';
+import { env } from '$env/dynamic/private';
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	try {
@@ -21,7 +22,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		const schoolInfo: NiceSchoolInfo = await ky
 			.get('https://open.neis.go.kr/hub/schoolInfo', {
 				searchParams: {
-					KEY: '', // TODO: get api key from dotenv
+					KEY: env.NICE_API_KEY, // TODO: get api key from dotenv
 					Type: 'json',
 					pIndex: 1,
 					pSize: 100,
