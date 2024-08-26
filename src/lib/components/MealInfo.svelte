@@ -17,4 +17,12 @@
         flex-direction: column;
         align-items: center;
     }
+
+    h2 {
+        font-size: 38px;
+    }
+
+    p {
+        font-size: 24px;
+    }
 </style>
