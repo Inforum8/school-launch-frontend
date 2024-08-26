@@ -41,6 +41,7 @@
         width: 5em;
         height: 5em;
         padding: 0.5em;
+				margin: 1em;
     }
 
     .corner p {
