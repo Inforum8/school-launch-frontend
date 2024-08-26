@@ -15,7 +15,8 @@
 	<hr class="divider" />
 
 	<footer>
-		<p><a href="https://www.instagram.com/sjhs.official">@sjhs.official</a> X <a href="https://www.instagram.com/inforum_siji">@inforum_siji</a></p>
+		<p class="center-text"><b>Made by 나이준 ❤️</b></p>
+		<p class="right-text"><a href="https://www.instagram.com/sjhs.official">@sjhs.official</a> X <a href="https://www.instagram.com/inforum_siji">@inforum_siji</a></p>
 	</footer>
 </div>
 
@@ -40,9 +41,23 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        align-items: flex-end;
-        margin-right: 16px;
+        align-items: center;
         padding: 12px;
+    }
+
+    .center-text {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 8px;
+    }
+
+    .right-text {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        flex: 1;
+        margin-right: 16px;
     }
 
     footer a {
