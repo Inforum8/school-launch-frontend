@@ -1,7 +1,7 @@
 <script>
-	import Counter from './Counter.svelte';
-	import welcome from '$lib/images/svelte-welcome.webp';
-	import welcome_fallback from '$lib/images/svelte-welcome.png';
+import MealInfo from '$lib/components/MealInfo.svelte';
+import AllergyInfo from '$lib/components/AllergyInfo.svelte';
+import StudentAds from '$lib/components/StudentAds.svelte';
 </script>
 
 <svelte:head>
@@ -9,51 +9,71 @@
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-<section>
-	<h1>
-		<span class="welcome">
-			<picture>
-				<source srcset={welcome} type="image/webp" />
-				<img src={welcome_fallback} alt="Welcome" />
-			</picture>
-		</span>
+<section class="page">
+	<div class="content">
+		<div class="section">
+			<MealInfo />
+		</div>
 
-		to your new<br />SvelteKit app
-	</h1>
+		<div class="divider vertical"></div>
 
-	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2>
+		<div class="section">
+			<AllergyInfo />
+		</div>
 
-	<Counter />
+		<div class="divider vertical"></div>
+
+		<div class="section">
+			<StudentAds />
+		</div>
+	</div>
+
 </section>
 
 <style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		flex: 0.6;
-	}
+    .page {
+        width: 100%;
+        height: 100%;
+        flex: 1;
+        display: flex;
+				flex-direction: column;
+    }
 
-	h1 {
-		width: 100%;
-	}
+    .content {
+        display: flex;
+        flex: 1;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+    }
 
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
-	}
+    .section:nth-child(1) {
+        flex: 2;
+    }
 
-	.welcome img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		display: block;
-	}
+    .section:nth-child(2),
+    .section:nth-child(3) {
+        flex: 1;
+    }
+
+    .section {
+				flex: 1;
+				display: flex;
+        width: 100%;
+        height: 100%;
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+    .divider {
+        border: 0;
+        margin: 1rem 0;
+        background: #ccc;
+    }
+
+    .divider.vertical {
+        width: 1px;
+        height: auto;
+        margin: 0 1rem;
+    }
 </style>
