@@ -2,6 +2,7 @@ import { json, type RequestEvent } from '@sveltejs/kit';
 import type { ApiResult } from '$lib/type/result';
 import ky from 'ky';
 import { env } from '$env/dynamic/private';
+import type { Nutrition, ProcessedMeal, ProcessedMealServiceDietInfo } from '$lib/type/meal';
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	try {
@@ -43,7 +44,12 @@ export async function GET(event: RequestEvent): Promise<Response> {
 			headers: { 'content-type': 'application/json', 'Accept': '*/*' }
 		}).json();
 
-		return json(transformMealServiceDietInfo(mealInfo));
+		return json({
+			success: true,
+			status: 0,
+			data: transformMealServiceDietInfo(mealInfo),
+			message: '성공적으로 급식정보를 불러왔습니다.'
+		} as ApiResult<ProcessedMealServiceDietInfo>);
 	} catch (e: unknown) {
 		console.error(e)
 		return new Response(JSON.stringify({ message: (e as Error).message }), {
@@ -102,49 +108,6 @@ interface Meal {
 	MLSV_FROM_YMD: string; // 급식 시작 날짜
 	MLSV_TO_YMD: string; // 급식 종료 날짜
 	LOAD_DTM: string; // 데이터 수정 일자
-}
-
-interface ProcessedMealServiceDietInfo {
-	totalMeals: number;
-	result: {
-		code: string;
-		message: string;
-	};
-	meals: ProcessedMeal[];
-}
-
-interface ProcessedMeal {
-	educationOffice: {
-		code: string;
-		name: string;
-	};
-	school: {
-		code: string;
-		name: string;
-	};
-	mealType: {
-		code: string;
-		name: string;
-	};
-	date: string;
-	servingCount: number;
-	menu: string;
-	originInfo: string;
-	calorie: string;
-	nutrition: Nutrition;
-	loadDate: string;
-}
-
-interface Nutrition {
-	carbohydrate: string;
-	protein: string;
-	fat: string;
-	vitaminA: string;
-	thiamine: string;
-	riboflavin: string;
-	vitaminC: string;
-	calcium: string;
-	iron: string;
 }
 
 function transformMealServiceDietInfo(data: MealServiceDietInfo): ProcessedMealServiceDietInfo {

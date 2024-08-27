@@ -1,13 +1,15 @@
 <script lang="ts">
+	export let menu: string;
 
+	const menuArray: string[] = menu.split('<br/>');
 </script>
 
 <div>
 	<h2>급식 정보</h2>
-	<p>오늘의 메뉴:</p>
 	<ul>
-		<li>밥</li>
-		<!-- 더 추가, 나이스 API 활용 예정 -->
+		{#each menuArray as item}
+			<li>{item}</li>
+		{/each}
 	</ul>
 </div>
 
@@ -16,6 +18,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+				justify-content: center;
     }
 
     h2 {
@@ -23,6 +26,10 @@
     }
 
     p {
-        font-size: 24px;
+        font-size: 30px;
     }
+
+		li {
+				font-size: 30px;
+		}
 </style>

@@ -1,6 +1,6 @@
+import type { PageLoad } from '../../.svelte-kit/types/src/routes/$types';
 import type { ApiResult } from '$lib/type/result';
 import type { ProcessedSchoolInfo } from '$lib/type/school';
-import type { PageLoad } from '../../.svelte-kit/types/src/routes/about/$types';
 
 // since there's no dynamic data here, we can prerender
 // it so that it gets served as a static asset in production

@@ -3,14 +3,34 @@
 	import AllergyInfo from '$lib/components/AllergyInfo.svelte';
 	import StudentAds from '$lib/components/StudentAds.svelte';
 	import type { ProcessedSchoolInfo } from '$lib/type/school';
+	import type { ProcessedMealServiceDietInfo } from '$lib/type/meal';
+	import { onMount } from 'svelte';
+	import type { ApiResult } from '$lib/type/result';
 
 	export let data: { schoolInfo: ProcessedSchoolInfo | null };
 	let schoolInfo = data.schoolInfo;
 	let errorMessage: string | null = null;
 	let multipleSchoolsDetected = false;
 
+	let mealInfo: ApiResult<ProcessedMealServiceDietInfo> | null = null;
+
 	if (schoolInfo) {
 		multipleSchoolsDetected = schoolInfo.totalSchools > 1;
+
+		if (!multipleSchoolsDetected) {
+			// 급해서 이렇게 만들었지만, 나중에 더 좋은 처리방식으로 갈아타야함
+			onMount(async () => {
+				mealInfo = await (await fetch(`/api/mealInfo?schoolCode=${schoolInfo.schools[0].school.code}&educationOfficeCode=${schoolInfo.schools[0].educationOffice.code}`)).json();
+
+				if (!mealInfo?.success) {
+					errorMessage = '급식정보를 불러오는데에 실패하였습니다.';
+				} else if (mealInfo.data.meals.length > 1) {
+					errorMessage = '급식정보가 너무 많습니다.'
+				} else if (mealInfo.data.meals.length === 0) {
+					errorMessage = '오늘은 급식이 존재하지 않습니다!'
+				}
+			});
+		}
 	}
 </script>
 
@@ -28,10 +48,12 @@
 		</div>
 	{:else if !schoolInfo}
 		<div class="not-found">School not found.</div>
+	{:else if !mealInfo}
+		<div class="not-found">급식 정보가 존재하지 않습니다!</div>
 	{:else}
 		<div class="content">
 			<div class="section">
-				<MealInfo />
+				<MealInfo menu={mealInfo.data.meals[0].menu} />
 			</div>
 
 			<div class="divider vertical"></div>
