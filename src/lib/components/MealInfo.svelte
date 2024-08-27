@@ -1,16 +1,19 @@
 <script lang="ts">
+	import { type MealInfo, parseMealAllergies } from '$lib/type/allergy';
+
 	export let menu: string;
 
-	const menuArray: string[] = menu.split('<br/>');
+	const menuArray: MealInfo[] = parseMealAllergies(menu.split('<br/>'));
 </script>
 
 <div>
 	<h2>급식 정보</h2>
 	<ul>
 		{#each menuArray as item}
-			<li>{item}</li>
+			<li>{item.name}</li>
 		{/each}
 	</ul>
+<!-- TODO: 아이콘 넣어야함 (알러지)	-->
 </div>
 
 <style>
