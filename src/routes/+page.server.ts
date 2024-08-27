@@ -1,4 +1,4 @@
-import type { PageLoad } from '../../.svelte-kit/types/src/routes/$types';
+import type { PageServerLoad } from '../../.svelte-kit/types/src/routes/$types';
 import type { ApiResult } from '$lib/type/result';
 import type { ProcessedSchoolInfo } from '$lib/type/school';
 
@@ -6,7 +6,7 @@ import type { ProcessedSchoolInfo } from '$lib/type/school';
 // it so that it gets served as a static asset in production
 export const prerender = true;
 
-export const load: PageLoad = async ({ fetch }) => {
+export const load: PageServerLoad = async ({ fetch }) => {
 	const schoolName = import.meta.env.VITE_SCHOOL_NAME;
 
 	const res: ApiResult<ProcessedSchoolInfo> = await (await fetch(`/api/schoolInfo?schoolName=${schoolName}`)).json();
