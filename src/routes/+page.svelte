@@ -3,30 +3,15 @@
 	import AllergyInfo from '$lib/components/AllergyInfo.svelte';
 	import StudentAds from '$lib/components/StudentAds.svelte';
 	import type { ProcessedSchoolInfo } from '$lib/type/school';
-	import { onMount } from 'svelte';
 
-	export let schoolInfo: ProcessedSchoolInfo | null = null;
-	let loading = true;
+	export let data: { schoolInfo: ProcessedSchoolInfo | null };
+	let schoolInfo = data.schoolInfo;
 	let errorMessage: string | null = null;
 	let multipleSchoolsDetected = false;
 
-	onMount(async () => {
-		try {
-			const response = await fetch(`/api/schoolInfo?schoolName=${import.meta.env.VITE_SCHOOL_NAME}`);
-			const data: { success: boolean; data: ProcessedSchoolInfo; message?: string } = await response.json();
-
-			if (data.success) {
-				schoolInfo = data.data;
-				multipleSchoolsDetected = schoolInfo.totalSchools > 1;
-			} else {
-				errorMessage = data.message || 'An error occurred while fetching school information.';
-			}
-		} catch {
-			errorMessage = 'Failed to fetch data. Please try again later.';
-		} finally {
-			loading = false;
-		}
-	});
+	if (schoolInfo) {
+		multipleSchoolsDetected = schoolInfo.totalSchools > 1;
+	}
 </script>
 
 <svelte:head>
@@ -35,9 +20,7 @@
 </svelte:head>
 
 <section class="page">
-	{#if loading}
-		<div class="loading">Loading...</div>
-	{:else if errorMessage}
+	{#if errorMessage}
 		<div class="error">{errorMessage}</div>
 	{:else if multipleSchoolsDetected}
 		<div class="warning">
@@ -113,13 +96,13 @@
         margin: 0 1rem;
     }
 
-    .loading {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-        font-size: 1.5rem;
-    }
+    /*.loading {*/
+    /*    display: flex;*/
+    /*    justify-content: center;*/
+    /*    align-items: center;*/
+    /*    height: 100%;*/
+    /*    font-size: 1.5rem;*/
+    /*}*/
 
     .error, .not-found, .warning {
         display: flex;
