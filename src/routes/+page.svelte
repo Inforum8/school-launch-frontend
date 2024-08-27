@@ -1,7 +1,32 @@
-<script>
-import MealInfo from '$lib/components/MealInfo.svelte';
-import AllergyInfo from '$lib/components/AllergyInfo.svelte';
-import StudentAds from '$lib/components/StudentAds.svelte';
+<script lang="ts">
+	import MealInfo from '$lib/components/MealInfo.svelte';
+	import AllergyInfo from '$lib/components/AllergyInfo.svelte';
+	import StudentAds from '$lib/components/StudentAds.svelte';
+	import type { ProcessedSchoolInfo } from '$lib/type/school';
+	import { onMount } from 'svelte';
+
+	export let schoolInfo: ProcessedSchoolInfo | null = null;
+	let loading = true;
+	let errorMessage: string | null = null;
+	let multipleSchoolsDetected = false;
+
+	onMount(async () => {
+		try {
+			const response = await fetch(`/api/schoolInfo?schoolName=${import.meta.env.VITE_SCHOOL_NAME}`);
+			const data: { success: boolean; data: ProcessedSchoolInfo; message?: string } = await response.json();
+
+			if (data.success) {
+				schoolInfo = data.data;
+				multipleSchoolsDetected = schoolInfo.totalSchools > 1;
+			} else {
+				errorMessage = data.message || 'An error occurred while fetching school information.';
+			}
+		} catch {
+			errorMessage = 'Failed to fetch data. Please try again later.';
+		} finally {
+			loading = false;
+		}
+	});
 </script>
 
 <svelte:head>
@@ -10,24 +35,35 @@ import StudentAds from '$lib/components/StudentAds.svelte';
 </svelte:head>
 
 <section class="page">
-	<div class="content">
-		<div class="section">
-			<MealInfo />
+	{#if loading}
+		<div class="loading">Loading...</div>
+	{:else if errorMessage}
+		<div class="error">{errorMessage}</div>
+	{:else if multipleSchoolsDetected}
+		<div class="warning">
+			<p>Multiple schools detected. Please refine your search.</p>
 		</div>
+	{:else if !schoolInfo}
+		<div class="not-found">School not found.</div>
+	{:else}
+		<div class="content">
+			<div class="section">
+				<MealInfo />
+			</div>
 
-		<div class="divider vertical"></div>
+			<div class="divider vertical"></div>
 
-		<div class="section">
-			<AllergyInfo />
+			<div class="section">
+				<AllergyInfo />
+			</div>
+
+			<div class="divider vertical"></div>
+
+			<div class="section">
+				<StudentAds />
+			</div>
 		</div>
-
-		<div class="divider vertical"></div>
-
-		<div class="section">
-			<StudentAds />
-		</div>
-	</div>
-
+	{/if}
 </section>
 
 <style>
@@ -36,7 +72,7 @@ import StudentAds from '$lib/components/StudentAds.svelte';
         height: 100%;
         flex: 1;
         display: flex;
-				flex-direction: column;
+        flex-direction: column;
     }
 
     .content {
@@ -57,8 +93,8 @@ import StudentAds from '$lib/components/StudentAds.svelte';
     }
 
     .section {
-				flex: 1;
-				display: flex;
+        flex: 1;
+        display: flex;
         width: 100%;
         height: 100%;
         flex-direction: column;
@@ -75,5 +111,27 @@ import StudentAds from '$lib/components/StudentAds.svelte';
         width: 1px;
         height: auto;
         margin: 0 1rem;
+    }
+
+    .loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        font-size: 1.5rem;
+    }
+
+    .error, .not-found, .warning {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        color: #f00;
+        font-size: 1.25rem;
+        text-align: center;
+    }
+
+    .warning {
+        color: #f80;
     }
 </style>

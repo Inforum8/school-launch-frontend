@@ -2,6 +2,7 @@ import { json, type RequestEvent } from '@sveltejs/kit';
 import ky from 'ky';
 import type { ApiResult } from '$lib/type/result';
 import { env } from '$env/dynamic/private';
+import type { ProcessedSchool, ProcessedSchoolInfo } from '$lib/type/school';
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	try {
@@ -121,53 +122,6 @@ interface NiceSchool {
 	FOND_YMD: string;
 	FOAS_MEMRD: string;
 	LOAD_DTM: string;
-}
-
-interface ProcessedSchoolInfo {
-	totalSchools: number;
-	result: {
-		code: string;
-		message: string;
-	};
-	schools: ProcessedSchool[];
-}
-
-interface ProcessedSchool {
-	educationOffice: {
-		code: string;
-		name: string;
-	};
-	school: {
-		code: string;
-		name: string;
-		englishName: string;
-		type: string;
-	};
-	location: {
-		city: string;
-		district: string;
-		postalCode: string;
-		address: string;
-		detailedAddress: string;
-	};
-	contact: {
-		phone: string;
-		fax: string;
-		homepage: string;
-	};
-	details: {
-		foundationType: string;
-		coeducationType: string;
-		highSchoolType: string;
-		industrialSpecialClassExists: boolean;
-		generalOrSpecialized: string;
-		specialPurposeHighSchoolType: string | null;
-		admissionPhase: string;
-		dayOrNight: string;
-		foundationDate: string;
-		anniversary: string;
-	};
-	lastModified: string;
 }
 
 function transformSchoolInfo(data: NiceSchoolInfo): ProcessedSchoolInfo {

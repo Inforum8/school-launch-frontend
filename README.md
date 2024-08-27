@@ -33,6 +33,7 @@ Please fill .env file for using nice api
 
 ```env
 NICE_API_KEY=
+VITE_SCHOOL_NAME=
 ```
 
 ## Installation
