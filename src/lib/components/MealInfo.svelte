@@ -55,7 +55,7 @@
         align-items: center;
         justify-content: space-between;
         margin-bottom: 15px;
-        padding: 10px;
+        padding: 20px;
         background-color: #f5f5f5;
         border-radius: 8px;
     }
