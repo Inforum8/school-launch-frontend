@@ -6,9 +6,10 @@
 	let containerHeight: number;
 	let listHeight: number;
 	let scrollPosition = 0;
+	let scrolling = false;
 
 	onMount(() => {
-		const container = document.querySelector('.allergy-info') as HTMLElement;
+		const container = document.querySelector('.allergy-list-container') as HTMLElement;
 		const list = document.querySelector('.allergy-list') as HTMLElement;
 		containerHeight = container.clientHeight;
 		listHeight = list.clientHeight;
@@ -19,20 +20,31 @@
 	});
 
 	function startScrolling() {
+		if (scrolling) return;
+		scrolling = true;
+
 		const scrollStep = () => {
-			scrollPosition += 1;
+			scrollPosition += 0.5;  // 스크롤 속도를 조절할 수 있습니다
 			if (scrollPosition >= listHeight) {
 				scrollPosition = -containerHeight;
 			}
-			requestAnimationFrame(scrollStep);
+			if (scrolling) {
+				requestAnimationFrame(scrollStep);
+			}
 		};
 		requestAnimationFrame(scrollStep);
+	}
+
+	function stopScrolling() {
+		scrolling = false;
 	}
 </script>
 
 <div class="allergy-info">
 	<h2>알레르기 정보</h2>
-	<div class="allergy-list-container">
+	<div class="allergy-list-container"
+			 on:mouseenter={stopScrolling}
+			 on:mouseleave={startScrolling}>
 		<ul class="allergy-list" style="transform: translateY({-scrollPosition}px)">
 			{#each allergyList as allergy}
 				<li>
@@ -54,10 +66,9 @@
         flex-direction: column;
         align-items: center;
         width: 100%;
-        max-width: 600px;
+        max-width: 400px;
         margin: 0;
-        height: 65vh; /* TV 화면에 맞게 조정 */
-        overflow: hidden;
+				height: 65lvh;
     }
 
     h2 {
@@ -67,8 +78,8 @@
 
     .allergy-list-container {
         width: 100%;
+        height: calc(100% - 58px); /* 제목 높이를 뺀 나머지 */
         overflow: hidden;
-        flex-grow: 1;
     }
 
     .allergy-list {

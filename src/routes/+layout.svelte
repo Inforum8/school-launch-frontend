@@ -31,7 +31,8 @@
         flex: 1;
         display: flex;
         flex-direction: column;
-        padding: 1rem;
+				padding-right: 1rem;
+				padding-left: 1rem;
         width: 100%;
         margin: 0 auto;
         box-sizing: border-box;

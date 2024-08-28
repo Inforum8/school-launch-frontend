@@ -52,19 +52,19 @@
 		<div class="not-found">급식 정보가 존재하지 않습니다!</div>
 	{:else}
 		<div class="content">
-			<div class="section">
-				<MealInfo menu={mealInfo.data.meals[0].menu} />
-			</div>
-
-			<div class="divider vertical"></div>
-
-			<div class="section">
+			<div class="section side-section">
 				<AllergyInfo />
 			</div>
 
 			<div class="divider vertical"></div>
 
-			<div class="section">
+			<div class="section main-section">
+				<MealInfo menu={mealInfo.data.meals[0].menu} />
+			</div>
+
+			<div class="divider vertical"></div>
+
+			<div class="section side-section">
 				<StudentAds />
 			</div>
 		</div>
@@ -72,10 +72,15 @@
 </section>
 
 <style>
+    :global(body, html) {
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+
     .page {
         width: 100%;
-        height: 100%;
-        flex: 1;
         display: flex;
         flex-direction: column;
     }
@@ -84,47 +89,38 @@
         display: flex;
         flex: 1;
         width: 100%;
-        height: 100%;
-        box-sizing: border-box;
-    }
-
-    .section:nth-child(1) {
-        flex: 2;
-    }
-
-    .section:nth-child(2),
-    .section:nth-child(3) {
-        flex: 1;
+        overflow: hidden;
     }
 
     .section {
-        flex: 1;
         display: flex;
-        width: 100%;
-        height: 100%;
         flex-direction: column;
+        height: 100%;
+        overflow-y: auto;
         padding: 1rem;
+        box-sizing: border-box;
+    }
+
+    .side-section {
+        flex: 1;
+        max-width: 20%;
+    }
+
+    .main-section {
+        flex: 3;
+        max-width: 60%;
     }
 
     .divider {
         border: 0;
-        margin: 1rem 0;
         background: #ccc;
     }
 
     .divider.vertical {
         width: 1px;
         height: auto;
-        margin: 0 1rem;
+        margin: 0 0.5rem;
     }
-
-    /*.loading {*/
-    /*    display: flex;*/
-    /*    justify-content: center;*/
-    /*    align-items: center;*/
-    /*    height: 100%;*/
-    /*    font-size: 1.5rem;*/
-    /*}*/
 
     .error, .not-found, .warning {
         display: flex;
