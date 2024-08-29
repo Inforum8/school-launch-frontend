@@ -24,18 +24,20 @@
     .app {
         display: flex;
         flex-direction: column;
-        min-height: 100vh;
+        height: 100vh;
+        overflow: hidden;
     }
 
     main {
         flex: 1;
         display: flex;
         flex-direction: column;
-				padding-right: 1rem;
-				padding-left: 1rem;
+        padding-right: 1rem;
+        padding-left: 1rem;
         width: 100%;
         margin: 0 auto;
         box-sizing: border-box;
+        overflow-y: auto;
     }
 
     footer {
@@ -44,6 +46,7 @@
         justify-content: center;
         align-items: center;
         padding: 12px;
+        background-color: white;
     }
 
     .center-text {
@@ -51,7 +54,7 @@
         display: flex;
         justify-content: center;
         margin-bottom: 8px;
-				font-size: 28px;
+        font-size: 28px;
     }
 
     .right-text {

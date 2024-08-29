@@ -7,24 +7,42 @@
 	let listHeight: number;
 	let scrollPosition = 0;
 	let scrolling = false;
+	let containerRef: HTMLElement;
 
 	onMount(() => {
-		const container = document.querySelector('.allergy-list-container') as HTMLElement;
-		const list = document.querySelector('.allergy-list') as HTMLElement;
-		containerHeight = container.clientHeight;
+		adjustContainerHeight();
+		window.addEventListener('resize', adjustContainerHeight);
+		return () => {
+			window.removeEventListener('resize', adjustContainerHeight);
+		};
+	});
+
+	function adjustContainerHeight() {
+		if (!containerRef) return;
+
+		const mainElement = document.querySelector('main');
+		if (mainElement) {
+			const mainRect = mainElement.getBoundingClientRect();
+			containerRef.style.height = `${mainRect.height}px`;
+		}
+
+		const list = containerRef.querySelector('.allergy-list') as HTMLElement;
+		containerHeight = containerRef.clientHeight;
 		listHeight = list.clientHeight;
 
 		if (listHeight > containerHeight) {
 			startScrolling();
+		} else {
+			stopScrolling();
 		}
-	});
+	}
 
 	function startScrolling() {
 		if (scrolling) return;
 		scrolling = true;
 
 		const scrollStep = () => {
-			scrollPosition += 0.5;  // 스크롤 속도를 조절할 수 있습니다
+			scrollPosition += 0.5;
 			if (scrollPosition >= listHeight) {
 				scrollPosition = -containerHeight;
 			}
@@ -40,7 +58,7 @@
 	}
 </script>
 
-<div class="allergy-info">
+<div class="allergy-info" bind:this={containerRef}>
 	<h2>알레르기 정보</h2>
 	<div class="allergy-list-container"
 			 on:mouseenter={stopScrolling}
@@ -68,17 +86,18 @@
         width: 100%;
         max-width: 400px;
         margin: 0;
-				height: 65lvh;
+        height: 100%;
+        overflow: hidden;
     }
 
     h2 {
-        font-size: 38px;
+        font-size: clamp(24px, 5vw, 38px);
         margin-bottom: 20px;
     }
 
     .allergy-list-container {
         width: 100%;
-        height: calc(100% - 58px); /* 제목 높이를 뺀 나머지 */
+        height: calc(100% - 58px); /* Subtracting title height */
         overflow: hidden;
     }
 
@@ -92,7 +111,7 @@
     li {
         display: flex;
         align-items: center;
-        font-size: 24px;
+        font-size: clamp(16px, 3vw, 24px);
         margin-bottom: 15px;
         padding: 10px;
         background-color: #f5f5f5;
@@ -100,19 +119,13 @@
     }
 
     .allergy-icon {
-        width: 30px;
-        height: 30px;
+        width: clamp(24px, 5vw, 30px);
+        height: clamp(24px, 5vw, 30px);
         margin-right: 15px;
     }
 
     @media (max-width: 600px) {
-        li {
-            font-size: 20px;
-        }
-
         .allergy-icon {
-            width: 24px;
-            height: 24px;
             margin-right: 10px;
         }
     }

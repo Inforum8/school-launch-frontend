@@ -1,12 +1,30 @@
 <script lang="ts">
 	import { type MealInfo, parseMealAllergies } from '$lib/type/allergy';
+	import { onMount } from 'svelte';
 
 	export let menu: string;
 
 	const menuArray: MealInfo[] = parseMealAllergies(menu.split('<br/>'));
+	let containerRef: HTMLElement;
+
+	onMount(() => {
+		adjustFontSize();
+		window.addEventListener('resize', adjustFontSize);
+		return () => {
+			window.removeEventListener('resize', adjustFontSize);
+		};
+	});
+
+	function adjustFontSize() {
+		if (!containerRef) return;
+		const containerHeight = containerRef.clientHeight;
+		const itemCount = menuArray.length;
+		const baseSize = Math.min(containerHeight / (itemCount * 2.5), 24);
+		containerRef.style.setProperty('--base-font-size', `${baseSize}px`);
+	}
 </script>
 
-<div class="meal-info">
+<div class="meal-info" bind:this={containerRef}>
 	<h2>급식 정보</h2>
 	<ul>
 		{#each menuArray as item}
@@ -31,64 +49,67 @@
     .meal-info {
         display: flex;
         flex-direction: column;
-        align-items: center;
-        justify-content: center;
         width: 100%;
-        max-width: 800px;
-        margin: 0 auto;
+        height: 100%;
+        overflow: hidden;
+        --base-font-size: 16px;
     }
 
     h2 {
-        font-size: 38px;
-        margin-bottom: 20px;
+        font-size: calc(var(--base-font-size) * 1.5);
+        margin-bottom: 1rem;
+        text-align: center;
     }
 
     ul {
         list-style-type: none;
         padding: 0;
-        width: 100%;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: calc(100% - 3rem); /* Subtracting approximate header height */
     }
 
     li {
-        font-size: 24px;
+        font-size: var(--base-font-size);
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 15px;
-        padding: 20px;
         background-color: #f5f5f5;
         border-radius: 8px;
+        padding: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    li:last-child {
+        margin-bottom: 0;
     }
 
     .meal-name {
         flex: 1;
         margin-right: 10px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .allergy-icons {
         display: flex;
         align-items: center;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
     }
 
     .allergy-icon {
-        width: 24px;
-        height: 24px;
+        width: calc(var(--base-font-size) * 1.2);
+        height: calc(var(--base-font-size) * 1.2);
         margin-left: 5px;
     }
 
     @media (max-width: 600px) {
-        li {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .meal-name {
-            margin-bottom: 5px;
-        }
-
         .allergy-icons {
-            margin-top: 5px;
+            max-width: 40%;
+            overflow-x: auto;
         }
     }
 </style>

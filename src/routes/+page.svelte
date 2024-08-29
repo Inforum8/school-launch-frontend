@@ -18,7 +18,6 @@
 		multipleSchoolsDetected = schoolInfo.totalSchools > 1;
 
 		if (!multipleSchoolsDetected) {
-			// 급해서 이렇게 만들었지만, 나중에 더 좋은 처리방식으로 갈아타야함
 			onMount(async () => {
 				mealInfo = await (await fetch(`/api/mealInfo?schoolCode=${schoolInfo.schools[0].school.code}&educationOfficeCode=${schoolInfo.schools[0].educationOffice.code}`)).json();
 
@@ -72,15 +71,9 @@
 </section>
 
 <style>
-    :global(body, html) {
-        height: 100vh;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-    }
-
     .page {
         width: 100%;
+        height: 100%;
         display: flex;
         flex-direction: column;
     }
@@ -89,6 +82,7 @@
         display: flex;
         flex: 1;
         width: 100%;
+        height: 100%;
         overflow: hidden;
     }
 
@@ -97,7 +91,7 @@
         flex-direction: column;
         height: 100%;
         overflow-y: auto;
-        padding: 1rem;
+        padding: 0.5rem;
         box-sizing: border-box;
     }
 
@@ -111,15 +105,11 @@
         max-width: 60%;
     }
 
-    .divider {
-        border: 0;
-        background: #ccc;
-    }
-
     .divider.vertical {
         width: 1px;
         height: auto;
-        margin: 0 0.5rem;
+        margin: 0 0.25rem;
+        background: #ccc;
     }
 
     .error, .not-found, .warning {
@@ -128,7 +118,7 @@
         align-items: center;
         height: 100%;
         color: #f00;
-        font-size: 1.25rem;
+        font-size: clamp(16px, 2.5vw, 24px);
         text-align: center;
     }
 
