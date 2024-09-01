@@ -18,26 +18,21 @@
 	function adjustLayout() {
 		if (!containerRef) return;
 		const containerHeight = containerRef.clientHeight;
-		const containerWidth = containerRef.clientWidth;
 		const itemCount = menuArray.length;
 
-		// Calculate the ideal item height
 		const idealItemHeight = containerHeight / itemCount;
 
-		// Calculate the maximum width for the meal name (70% of container width)
-		const maxNameWidth = containerWidth * 0.7;
+		const minItemHeight = 50;
+		const itemHeight = Math.max(idealItemHeight, minItemHeight);
 
-		// Calculate the base font size (capped at 24px)
-		const baseFontSize = Math.min(idealItemHeight / 3, 24);
+		const baseFontSize = Math.min(Math.max(itemHeight / 2.2, 16), 30);
 
+		containerRef.style.setProperty('--item-height', `${itemHeight}px`);
 		containerRef.style.setProperty('--base-font-size', `${baseFontSize}px`);
-		containerRef.style.setProperty('--item-height', `${idealItemHeight}px`);
-		containerRef.style.setProperty('--max-name-width', `${maxNameWidth}px`);
 	}
 </script>
 
 <div class="meal-info" bind:this={containerRef}>
-	<h2>급식 정보</h2>
 	<ul>
 		{#each menuArray as item}
 			<li>
@@ -59,20 +54,11 @@
 
 <style>
     .meal-info {
-        display: flex;
-        flex-direction: column;
         width: 100%;
         height: 100%;
         overflow: hidden;
         --base-font-size: 16px;
-        --item-height: 50px;
-        --max-name-width: 70%;
-    }
-
-    h2 {
-        font-size: calc(var(--base-font-size) * 1.5);
-        margin-bottom: 0.5rem;
-        text-align: center;
+        --item-height: 60px;
     }
 
     ul {
@@ -81,7 +67,8 @@
         margin: 0;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        width: 100%;
+        height: 100%;
     }
 
     li {
@@ -90,11 +77,11 @@
         align-items: center;
         justify-content: space-between;
         background-color: #f5f5f5;
-        border-radius: 8px;
-        padding: 0.25rem 0.5rem;
-        margin-bottom: 1.0rem;
-				/* 아 몰라... 어케든 되겠지... */
-        height: calc(var(--base-font-size) * 4);
+        border-radius: 6px;
+        padding: 6px 10px;
+        margin-bottom: 6px;
+        height: var(--item-height);
+        box-sizing: border-box;
     }
 
     li:last-child {
@@ -103,31 +90,23 @@
 
     .meal-name {
         flex: 1;
-        margin-right: 10px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-width: var(--max-name-width);
+        margin-right: 10px;
     }
 
     .allergy-icons {
         display: flex;
         align-items: center;
         flex-wrap: nowrap;
-        overflow-x: auto;
-        max-width: 30%;
+        overflow-x: hidden;
     }
 
     .allergy-icon {
-        width: calc(var(--base-font-size) * 1.2);
-        height: calc(var(--base-font-size) * 1.2);
-        margin-left: 5px;
+        width: calc(var(--base-font-size) * 1.6);
+        height: calc(var(--base-font-size) * 1.6);
+        margin-left: 4px;
         flex-shrink: 0;
-    }
-
-    @media (max-width: 600px) {
-        .allergy-icons {
-            max-width: 40%;
-        }
     }
 </style>

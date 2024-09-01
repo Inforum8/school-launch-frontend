@@ -27,7 +27,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 		};
 	}
 
-	const mealInfoRes: ApiResult<ProcessedMealServiceDietInfo> = await (await fetch(`/api/mealInfo?schoolCode=${schoolInfo.schools[0].school.code}&educationOfficeCode=${schoolInfo.schools[0].educationOffice.code}`)).json();
+	const mealInfoRes: ApiResult<ProcessedMealServiceDietInfo> = await (await fetch(`/api/mealInfo?schoolCode=${schoolInfo.schools[0].school.code}&educationOfficeCode=${schoolInfo.schools[0].educationOffice.code}&date=20240902`)).json();
 
 	return {
 		schoolInfo,
