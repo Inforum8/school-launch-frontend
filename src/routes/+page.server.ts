@@ -1,24 +1,42 @@
-import type { PageServerLoad } from '../../.svelte-kit/types/src/routes/$types';
+import type { PageServerLoad } from './$types';
 import type { ApiResult } from '$lib/type/result';
 import type { ProcessedSchoolInfo } from '$lib/type/school';
+import type { ProcessedMealServiceDietInfo } from '$lib/type/meal';
 
-// since there's no dynamic data here, we can prerender
-// it so that it gets served as a static asset in production
-export const prerender = true;
+export const prerender = false;
 
 export const load: PageServerLoad = async ({ fetch }) => {
 	const schoolName = import.meta.env.VITE_SCHOOL_NAME;
 
-	const res: ApiResult<ProcessedSchoolInfo> = await (await fetch(`/api/schoolInfo?schoolName=${schoolName}`)).json();
+	const schoolInfoRes: ApiResult<ProcessedSchoolInfo> = await (await fetch(`/api/schoolInfo?schoolName=${schoolName}`)).json();
 
-	if (res.success) {
+	if (!schoolInfoRes.success) {
+		console.error(schoolInfoRes);
 		return {
-			schoolInfo: res.data
+			schoolInfo: null,
+			mealInfo: null
 		};
-	} else {
-		console.error(res);
+	}
+
+	const schoolInfo = schoolInfoRes.data;
+
+	if (schoolInfo.totalSchools > 1) {
 		return {
-			schoolInfo: null
+			schoolInfo,
+			mealInfo: null
 		};
+	}
+
+	const mealInfoRes: ApiResult<ProcessedMealServiceDietInfo> = await (await fetch(`/api/mealInfo?schoolCode=${schoolInfo.schools[0].school.code}&educationOfficeCode=${schoolInfo.schools[0].educationOffice.code}`)).json();
+
+	return {
+		schoolInfo,
+		mealInfo: mealInfoRes.success ? mealInfoRes.data : null
+	};
+};
+
+export const config = {
+	isr: {
+		expiration: 60 * 60 // 1 hour in seconds
 	}
 };

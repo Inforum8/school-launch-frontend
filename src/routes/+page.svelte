@@ -4,32 +4,29 @@
 	import StudentAds from '$lib/components/StudentAds.svelte';
 	import type { ProcessedSchoolInfo } from '$lib/type/school';
 	import type { ProcessedMealServiceDietInfo } from '$lib/type/meal';
-	import { onMount } from 'svelte';
-	import type { ApiResult } from '$lib/type/result';
+	import { writable } from 'svelte/store';
 
-	export let data: { schoolInfo: ProcessedSchoolInfo | null };
-	let schoolInfo = data.schoolInfo;
+	export let data: {
+		schoolInfo: ProcessedSchoolInfo | null;
+		mealInfo: ProcessedMealServiceDietInfo | null;
+	};
+
+	const schoolInfo = writable(data.schoolInfo);
+	const mealInfo = writable(data.mealInfo);
 	let errorMessage: string | null = null;
-	let multipleSchoolsDetected = false;
 
-	let mealInfo: ApiResult<ProcessedMealServiceDietInfo> | null = null;
+	$: multipleSchoolsDetected = $schoolInfo ? $schoolInfo.totalSchools > 1 : false;
 
-	if (schoolInfo) {
-		multipleSchoolsDetected = schoolInfo.totalSchools > 1;
-
-		if (!multipleSchoolsDetected) {
-			onMount(async () => {
-				mealInfo = await (await fetch(`/api/mealInfo?schoolCode=${schoolInfo.schools[0].school.code}&educationOfficeCode=${schoolInfo.schools[0].educationOffice.code}`)).json();
-
-				if (!mealInfo?.success) {
-					errorMessage = '급식정보를 불러오는데에 실패하였습니다.';
-				} else if (mealInfo.data.meals.length > 1) {
-					errorMessage = '급식정보가 너무 많습니다.'
-				} else if (mealInfo.data.meals.length === 0) {
-					errorMessage = '오늘은 급식이 존재하지 않습니다!'
-				}
-			});
+	$: if ($mealInfo) {
+		if ($mealInfo.meals.length > 1) {
+			errorMessage = '급식정보가 너무 많습니다.';
+		} else if ($mealInfo.meals.length === 0) {
+			errorMessage = '오늘은 급식이 존재하지 않습니다!';
+		} else {
+			errorMessage = null;
 		}
+	} else {
+		errorMessage = null;
 	}
 </script>
 
@@ -45,9 +42,9 @@
 		<div class="warning">
 			<p>Multiple schools detected. Please refine your search.</p>
 		</div>
-	{:else if !schoolInfo}
+	{:else if !$schoolInfo}
 		<div class="not-found">School not found.</div>
-	{:else if !mealInfo}
+	{:else if !$mealInfo}
 		<div class="not-found">급식 정보가 존재하지 않습니다!</div>
 	{:else}
 		<div class="content">
@@ -58,7 +55,7 @@
 			<div class="divider vertical"></div>
 
 			<div class="section main-section">
-				<MealInfo menu={mealInfo.data.meals[0].menu} />
+				<MealInfo menu={$mealInfo.meals[0].menu} />
 			</div>
 
 			<div class="divider vertical"></div>
