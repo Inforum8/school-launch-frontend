@@ -48,7 +48,7 @@
 		<div class="not-found">급식 정보가 존재하지 않습니다!</div>
 	{:else}
 		<div class="content">
-			<div class="section side-section">
+			<div class="section allergy-section side-section">
 				<AllergyInfo />
 			</div>
 
@@ -93,13 +93,21 @@
     }
 
     .side-section {
-        flex: 1;
-        max-width: 20%;
+        flex: 2.5;
+        max-width: 30%;
+        transition: flex 0.3s ease, max-width 0.3s ease;
     }
 
     .main-section {
-        flex: 3;
-        max-width: 60%;
+        flex: 4;
+        max-width: 55%;
+        transition: max-width 0.3s ease;
+    }
+
+    .allergy-section {
+        flex: 1.5;
+        max-width: 15%;
+        transition: flex 0.3s ease, max-width 0.3s ease;
     }
 
     .divider.vertical {
@@ -121,5 +129,39 @@
 
     .warning {
         color: #f80;
+    }
+
+    @media (min-width: 768px) {
+        .side-section {
+            flex: 2.8;
+            max-width: 35%;
+        }
+
+        .allergy-section {
+            flex: 1.2;
+            max-width: 12%;
+        }
+
+        .main-section {
+            flex: 3.5;
+            max-width: 53%;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .side-section {
+            flex: 3;
+            max-width: 38%;
+        }
+
+        .allergy-section {
+            flex: 1.1;
+            max-width: 10%;
+        }
+
+        .main-section {
+            flex: 3.5;
+            max-width: 52%;
+        }
     }
 </style>
