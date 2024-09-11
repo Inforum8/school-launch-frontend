@@ -15,8 +15,8 @@
 	<hr class="divider" />
 
 	<footer>
-		<p class="center-text"><b>Made by 나이준 ❤️</b></p>
-		<p class="right-text"><a href="https://www.instagram.com/sjhs.official">@sjhs.official</a> X <a href="https://www.instagram.com/inforum_siji">@inforum_siji</a></p>
+		<p class="center-text text-8xl"><b>Made by 인포럼 ❤️</b></p>
+		<p class="right-text"><a href="https://www.instagram.com/inforum_siji">@inforum_siji</a></p>
 	</footer>
 </div>
 
@@ -69,6 +69,10 @@
     footer a {
         font-weight: bold;
     }
+
+		footer p {
+				font-size: 100px;
+		}
 
     @media (min-width: 480px) {
         footer {

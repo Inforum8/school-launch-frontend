@@ -71,7 +71,7 @@
 						alt={allergy.name}
 						class="allergy-icon"
 					/>
-					<span>{allergy.id} - {allergy.name}</span>
+					<span>{allergy.name}</span>
 				</li>
 			{/each}
 		</ul>
